@@ -116,7 +116,7 @@ class DDPM(pl.LightningModule):
         self.learn_logvar = learn_logvar
         self.logvar = torch.full(fill_value=logvar_init, size=(self.num_timesteps,), device=self.device, dtype=self.dtype)
         if self.learn_logvar:
-            self.logvar = nn.Parameter(self.logvar, requires_grad=True)
+            self.logvar = nn.Parameter(self.logvar, requires_grad=True).to(self.device)
 
 
     def register_schedule(self, given_betas=None, beta_schedule="linear", timesteps=1000,
@@ -1108,7 +1108,7 @@ class LatentDiffusion(DDPM):
         loss_simple = self.get_loss(model_output, target, mean=False).mean([1, 2, 3])
         loss_dict.update({f'{prefix}/loss_simple': loss_simple.mean()})
 
-        print(f'test {self.logvar.device} {t.device} {self.device}')
+        # print(f'test {self.logvar.device} {t.device} {self.device}')
         logvar_t = self.logvar[t].to(self.device)
         # print('self.logvar[t]',self.logvar[t])
         loss = loss_simple / torch.exp(logvar_t) + logvar_t
