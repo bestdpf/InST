@@ -35,7 +35,7 @@ def load_model_from_config(config, ckpt, verbose=False):
         print("unexpected keys:")
         print(u)
 
-    del pl_sd
+    del pl_sd, sd
     torch.cuda.empty_cache()
     model.cuda().half()
     return model
