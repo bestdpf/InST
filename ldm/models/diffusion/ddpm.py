@@ -76,10 +76,14 @@ class DDPM(pl.LightningModule):
                  use_positional_encodings=False,
                  learn_logvar=False,
                  logvar_init=0.,
+                 device='cuda',
+                 dtype='float16'
                  ):
         super().__init__()
         assert parameterization in ["eps", "x0"], 'currently only supporting "eps" and "x0"'
         self.parameterization = parameterization
+        self.device = device
+        self.dtype = dtype
         print(f"{self.__class__.__name__}: Running in {self.parameterization}-prediction mode")
         self.cond_stage_model = None
         self.clip_denoised = clip_denoised
@@ -115,8 +119,6 @@ class DDPM(pl.LightningModule):
         self.loss_type = loss_type
 
         self.learn_logvar = learn_logvar
-        print(f'ddpm device is {self.device} {self.dtype}')
-        print(traceback.format_tb())
         self.logvar = torch.full(fill_value=logvar_init, size=(self.num_timesteps,), device=self.device, dtype=self.dtype)
         if self.learn_logvar:
             self.logvar = nn.Parameter(self.logvar, requires_grad=True).to(self.device)
