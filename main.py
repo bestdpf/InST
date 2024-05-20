@@ -30,10 +30,10 @@ def load_model_from_config(config, ckpt, verbose=False):
     m, u = model.load_state_dict(sd, strict=False)
     if len(m) > 0 and verbose:
         print("missing keys:")
-        print(m)
+        # print(m)
     if len(u) > 0 and verbose:
         print("unexpected keys:")
-        print(u)
+        # print(u)
 
     del pl_sd, sd
     torch.cuda.empty_cache()
@@ -708,6 +708,7 @@ if __name__ == "__main__":
 
         trainer_kwargs["callbacks"] = [instantiate_from_config(callbacks_cfg[k]) for k in callbacks_cfg]
         trainer_kwargs["max_steps"] = trainer_opt.max_steps
+        trainer_kwargs['precision'] = 16
 
         trainer = Trainer.from_argparse_args(trainer_opt, **trainer_kwargs)
         trainer.logdir = logdir  ###
