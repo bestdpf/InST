@@ -85,14 +85,14 @@ class EmbeddingManager(nn.Module):
             embedded_text,            
             image_embeds,
     ):
-        b, n, device = *tokenized_text.shape, tokenized_text.device
+        b, n, device, dtype = *tokenized_text.shape, tokenized_text.device, tokenized_text.dtype
         for placeholder_string, placeholder_token in self.string_to_token_dict.items():
             
             placeholder_embedding = self.attention(image_embeds.view(b,1,768).to(device), image_embeds.view(b,1,768).to(device)).view(1,768)   
 
             if self.max_vectors_per_token == 1: # If there's only one vector per token, we can do a simple replacement
                 placeholder_idx = torch.where(tokenized_text == placeholder_token.to(device))
-                embedded_text[placeholder_idx] = placeholder_embedding.float()
+                embedded_text[placeholder_idx] = placeholder_embedding.float().type(dtype)
             else: # otherwise, need to insert and keep track of changing indices
                 if self.progressive_words:
                     self.progressive_counter += 1
