@@ -5,6 +5,7 @@ https://github.com/openai/improved-diffusion/blob/e94489283bb876ac1477d5dd7709bb
 https://github.com/CompVis/taming-transformers
 -- merci
 """
+import traceback
 
 import torch
 
@@ -114,6 +115,8 @@ class DDPM(pl.LightningModule):
         self.loss_type = loss_type
 
         self.learn_logvar = learn_logvar
+        print(f'ddpm device is {self.device} {self.dtype}')
+        print(traceback.format_tb())
         self.logvar = torch.full(fill_value=logvar_init, size=(self.num_timesteps,), device=self.device, dtype=self.dtype)
         if self.learn_logvar:
             self.logvar = nn.Parameter(self.logvar, requires_grad=True).to(self.device)
