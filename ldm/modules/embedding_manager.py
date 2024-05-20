@@ -85,7 +85,7 @@ class EmbeddingManager(nn.Module):
             embedded_text,            
             image_embeds,
     ):
-        b, n, device, dtype = *tokenized_text.shape, tokenized_text.device, tokenized_text.dtype
+        b, n, device, dtype = *tokenized_text.shape, tokenized_text.device, embedded_text.dtype
         for placeholder_string, placeholder_token in self.string_to_token_dict.items():
             
             placeholder_embedding = self.attention(image_embeds.view(b,1,768).to(device), image_embeds.view(b,1,768).to(device)).view(1,768)   
