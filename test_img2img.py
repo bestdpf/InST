@@ -183,9 +183,9 @@ log_dir = 'concept_images2024-05-20T16-57-00_line-art'
 model.embedding_manager.load(f'./logs/{log_dir}/checkpoints/embeddings.pt')
 model = model.to(device)
 # %%
-main(prompt='', \
+main(prompt='*', \
      content_dir='./Images/yangmi.jpg', \
-     style_dir='./Images/line-art.jpeg', \
+     style_dir='../line-art/concept_images/0.jpeg', \
      ddim_steps=50, \
      strength=0.7, \
      seed=42, \
