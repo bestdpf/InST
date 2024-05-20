@@ -179,7 +179,7 @@ def main(prompt='', content_dir='', style_dir='', ddim_steps=50, strength=0.5, m
 
 # %%
 # model.cpu()
-log_dir = 'logs/concept_images2024-05-20T16-57-00_line-art'
+log_dir = 'concept_images2024-05-20T16-57-00_line-art'
 model.embedding_manager.load(f'./logs/{log_dir}/checkpoints/embeddings.pt')
 model = model.to(device)
 # %%
