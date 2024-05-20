@@ -26,7 +26,7 @@ def load_model_from_config(config, ckpt, verbose=False):
     pl_sd = torch.load(ckpt, map_location="cuda")
     sd = pl_sd["state_dict"]
     config.model.params.ckpt_path = ckpt
-    model = instantiate_from_config(config.model)
+    model = instantiate_from_config(config.model).cuda().half()
     m, u = model.load_state_dict(sd, strict=False)
     if len(m) > 0 and verbose:
         print("missing keys:")
